@@ -47,3 +47,17 @@ class ControllerSports():
                 break
         event.finishEvent(participants[first],participants[second],participants[third])
         return True
+    
+    def countFinished(self):
+        cont = 0
+        for name, event in self.__events.items():
+            if (event.isFinished()):
+                cont += 1
+        return cont
+    
+    def countPending(self):
+        cont = 0
+        for name, event in self.__events.items():
+            if (event.isFinished() == False):
+                cont += 1
+        return cont

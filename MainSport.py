@@ -46,29 +46,35 @@ while True:
         pName = input("Enter the name of the participant: ")
         age = input("Enter the age of the participant: ")
         email = input("Enter the email of the participant (API): ")
-        if (controller.addParticipants(name,dni,pName,age,email)):
+        if (controller.addParticipant(name,dni,pName,age,email)):
             print("Participant ",pName," added!")
         else:
             print("Error adding the participant")
     elif option == 3:
-        events = controller.getEvents()
-        print("Pending events:")
-        for name,event in events.items():
-            if (event.isFinished() == False):
-                participants = event.getParticipants()
-                print(name)
-                for i in range(len(participants)):
-                    print("\t",participants[i])
+        if (controller.countPending() > 0):
+            events = controller.getEvents()
+            print("Pending events:")
+            for name,event in events.items():
+                if (event.isFinished() == False):
+                    participants = event.getParticipants()
+                    print(name)
+                    for i in range(len(participants)):
+                        print("\t",participants[i][1])
+        else:
+            print("There aren't any pending event")
     elif option == 4:
-        events = controller.getEvents()
-        print("Finished events...")
-        for name,event in events.items():
-            if (event.isFinished()):
-                print(name)
-                podium = event.getPodium()
-                print("\tFIRST: ",podium["FIRST"])
-                print("\tSECOND: ",podium["SECOND"])
-                print("\tTHIRD: ",podium["THIRD"])
+        if (controller.countFinished() > 0):
+            events = controller.getEvents()
+            print("Finished events...")
+            for name,event in events.items():
+                if (event.isFinished()):
+                    print(name)
+                    podium = event.getPodium()
+                    print("\tFIRST: ",podium["FIRST"][1])
+                    print("\tSECOND: ",podium["SECOND"][1])
+                    print("\tTHIRD: ",podium["THIRD"][1])
+        else:
+            print("There aren't any finished event")
     elif option == 5:
         name = input("Enter the name of the event to finish it: ")
         if (controller.finishEvent(name)):
